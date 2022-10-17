@@ -4,6 +4,9 @@ using TO_DO_API.Models;
 
 namespace TodoApi.Controllers
 {
+    /// <summary>
+    /// Is always [Route("api/Name of the Controller")]
+    /// </summary>
     [Route("api/TodoItemDTO")]
     [ApiController]
     public class TodoItemsController : ControllerBase
@@ -14,7 +17,10 @@ namespace TodoApi.Controllers
         {
             _context = context;
         }
-
+        /// <summary>
+        /// First implementation of the GET_Methods --> return value is ActionResult<T> - Type
+        /// </summary>
+        /// <returns></returns>
         // GET: api/TodoItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
@@ -23,7 +29,13 @@ namespace TodoApi.Controllers
                 .Select(x => ItemToDTO(x))
                 .ToListAsync();
         }
-
+        /// <summary>
+        /// Second implementation of the Get-Method --> return value is ActionResult<T> - Type
+        /// If there is no existing element with the requested Id then the Method returns NotFound-Code 404 
+        /// otherwise the Method returns the Code 200
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
@@ -37,6 +49,15 @@ namespace TodoApi.Controllers
 
             return ItemToDTO(todoItem);
         }
+        /// <summary>
+        /// If successful the Method returns the Code 204: NoContent
+        /// otherwise it can return Code 400: Badrequest
+        /// or the Method returns the Code 404: NotFound
+        /// If there is an Error make sure to call the GET-Mthod before the PUT-Method to make sure the the Database has an input
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="todoItemDTO"></param>
+        /// <returns></returns>
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -67,6 +88,11 @@ namespace TodoApi.Controllers
 
             return NoContent();
         }
+        /// <summary>
+        /// If successfulthe Method return value is status Code 201: CreatedAtAction
+        /// </summary>
+        /// <param name="todoItemDTO"></param>
+        /// <returns></returns>
         // POST: api/TodoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -86,7 +112,12 @@ namespace TodoApi.Controllers
                 new { id = todoItem.Id },
                 ItemToDTO(todoItem));
         }
-
+        /// <summary>
+        /// If successful the return value of this Method is Code 204: NoContent
+        /// else the Method returns the ErrorCode 404: NotFound
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
